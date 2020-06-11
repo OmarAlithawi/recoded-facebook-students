@@ -1,8 +1,11 @@
-import firebase from "firebase";
+import * as firebase from 'firebase';
+import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/database';
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: "PUT_API_KEY_HERE",
+  apiKey: "AIzaSyDPFwcO5W4cSdCIBU4zYSWd2Hsi52CLNQs",
   authDomain: "recodedfacebook.firebaseapp.com",
   databaseURL: "https://recodedfacebook.firebaseio.com",
   projectId: "recodedfacebook",
@@ -14,5 +17,4 @@ var firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
-
 export default db;
