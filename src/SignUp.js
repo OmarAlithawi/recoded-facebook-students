@@ -15,7 +15,7 @@ const SignUpPage = () => {
 
   const addData = (e) => {
     e.preventDefault()
-    db.collection("profiles").add({
+    db.collection("profiles").doc(userID).set({
       city : cityInputValue,
       name:name,
       userID: userID,
