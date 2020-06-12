@@ -1,6 +1,6 @@
 import React,{useState} from "react";
-import db from "./firebase";
 import * as firebase from 'firebase';
+import db from "./firebase";
 import 'firebase/auth';
 import { Button ,Row , Col , Container , Form , Image } from 'react-bootstrap';
 import googleImg from './google-signin.png'
@@ -15,37 +15,31 @@ const SignUpPage = () => {
 
   const addData = (e) => {
     e.preventDefault()
-    db.collection("profiles").doc(userID).set({
+
+    const info = {
       city : cityInputValue,
       name:name,
-      userID: userID,
+      userId: userID,
       imageUrl:imageUrl,
       profile: porfileInputValue
-    })
+    }
+    db.collection("profiles").doc(userID).set(info);
   }
 
    const signUpWithGoogle =  ()  => {
     const googleProvider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(googleProvider).then((result) =>{
-      const token = result.credential.accessToken;
+      //const token = result.credential.accessToken;
       const user = result.user;
       setName(user.displayName);
-      setUserId(user.a.c);
+      setUserId(user.uid);
       setImageUrl(user.photoURL)
+      console.log(user)
     
     }).catch(function(error) {
-      // Handle Errors here.
       console.log(error);
       console.log("Failed");
-      /*
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The db.auth.AuthCredential type that was used.
-      const credential = error.credential;
-      // ...
-      */
+   
     });
   }
   
@@ -55,11 +49,13 @@ const SignUpPage = () => {
         <Row>
           <Col>
           <Image onClick = {() => signUpWithGoogle()} src ={googleImg}/>
-          <Form.Group>
+          <Form onSubmit = {(e) => addData(e)}>
+          <Form.Group >
             <Form.Control onChange = {(e) => setCityInputValue(e.target.value)} type="text" placeholder="city" />
             <Form.Control onChange = {(e) => setProfileInputValue(e.target.value)}  type="text" placeholder="profile" />
-          </Form.Group>
-            <Button type = "submit" onClick = {(e) => addData(e)} variant="primary">Submit</Button>
+            <Button type = "submit"  variant="primary">Submit</Button>
+            </Form.Group>  
+            </Form>
           </Col>
         </Row>
     </Container>
